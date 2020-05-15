@@ -1,7 +1,22 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import classes from "./Cockipt.css";
 
 const cockpit = (props) => {
+  const toggleBtnRef = useRef(null);
+
+  useEffect(() => {
+    console.log("Cockpit.js - useEffect");
+    // setTimeout(() => {
+    //   alert("Saved data to cloud");
+    // }, 1000);
+
+    toggleBtnRef.current.click();
+
+    return () => {
+      console.log("Cockpit.js - cleaning");
+    };
+  }, []);
+
   const assignedClasses = [];
   let btnClass = "";
 
@@ -9,11 +24,11 @@ const cockpit = (props) => {
     btnClass = classes.Red;
   }
 
-  if (props.persons.length <= 2) {
+  if (props.personsLength <= 2) {
     assignedClasses.push(classes.red);
   }
-  
-  if (props.persons.length <= 1) {
+
+  if (props.personsLength <= 1) {
     assignedClasses.push(classes.bold);
   }
 
@@ -21,11 +36,12 @@ const cockpit = (props) => {
     <div className={classes.Cockipt}>
       <h1>{props.title}</h1>
       <p className={assignedClasses.join(" ")}>This is really working!</p>
-      <button className={btnClass} onClick={props.clicked}>
+      <button ref={toggleBtnRef} className={btnClass} onClick={props.clicked}>
         Toggle Persons
       </button>
+      <button onClick={props.login}>Login</button>
     </div>
   );
 };
 
-export default cockpit;
+export default React.memo(cockpit);
